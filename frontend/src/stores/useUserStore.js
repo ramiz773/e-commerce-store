@@ -37,17 +37,14 @@ export const useUserStore = create((set, get) => ({
   },
 
   checkAuth: async () => {
-    console.log("inside checkAuth function");
     set({ checkingAuth: true });
 
     try {
-      console.log("inside trycatch block");
       const response = await axios.get("/auth/profile");
       set({ user: response.data, checkingAuth: false });
     } catch (error) {
       set({ checkingAuth: false, user: null });
     }
-    console.log("outside trycatch block");
   },
 
   logout: async () => {

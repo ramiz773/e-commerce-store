@@ -7,17 +7,15 @@ import { Toaster } from "react-hot-toast";
 import { useUserStore } from "./stores/useUserStore";
 import { useEffect } from "react";
 import LoadingSpinner from "./components/LoadingSpinner";
+import AdminPage from "./pages/AdminPage";
+import CategoryPage from "./pages/CategoryPage";
 
 function App() {
-  console.log("inside app component");
   const { user, checkAuth, checkingAuth } = useUserStore();
 
   useEffect(() => {
-    console.log("inside app useEffect");
     checkAuth();
   }, [checkAuth]);
-
-  console.log(checkingAuth, user);
 
   if (checkingAuth) return <LoadingSpinner />;
 
@@ -41,6 +39,17 @@ function App() {
             path="/login"
             element={!user ? <LoginPage /> : <Navigate to={"/"} />}
           />
+          <Route
+            path="/secret-dashboard"
+            element={
+              user?.role === "admin" ? (
+                <AdminPage />
+              ) : (
+                <Navigate to={"/login"} />
+              )
+            }
+          />
+          <Route path="/category/:category" element={<CategoryPage />} />
         </Routes>
       </div>
       <Toaster />

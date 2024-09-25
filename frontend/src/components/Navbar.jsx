@@ -14,13 +14,13 @@ const Navbar = () => {
   const isAdmin = user?.role === "admin";
   return (
     <header className="fixed top-0 left-0 w-full bg-gray-900 bg-opacity-90 backdrop-blur-md shadow-lg z-40 transition-all duration-300 border-b border-emerald-800">
-      <div className="container mx-auto px-4 py-3 max-w-[1350px]">
+      <div className="container mx-auto px-4 py-3 max-w-[1600px]">
         <div className="flex flex-wrap items-center justify-between">
           <Link
             to="/"
             className="text-2xl font-bold text-emerald-400 items-center spaces-x-2 flex"
           >
-            E-Commerce
+            MONTAG
           </Link>
 
           <nav className="flex flex-wrap items-center gap-4">
@@ -39,7 +39,10 @@ const Navbar = () => {
             )}
 
             {isAdmin && (
-              <Link className="bg-emerald-700 hover:bg-emerald-600 text-white px-3 py-1 rounded-md font-medium transition duration-300 ease-in-out flex items-center">
+              <Link
+                to={"/secret-dashboard"}
+                className="bg-emerald-700 hover:bg-emerald-600 text-white px-3 py-1 rounded-md font-medium transition duration-300 ease-in-out flex items-center"
+              >
                 <Lock className="inline-block mr-1" size={18}></Lock>
                 <span className="hidden sm:inline">Dashboard</span>
               </Link>
