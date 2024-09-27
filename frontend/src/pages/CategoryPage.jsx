@@ -23,7 +23,7 @@ const CategoryPage = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
         >
-          {category.charAt(0).toUpperCase() + category.slice(1)}
+          {category?.charAt(0).toUpperCase() + category?.slice(1)}
         </motion.h1>
 
         <motion.div
@@ -32,11 +32,7 @@ const CategoryPage = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
         >
-          {products?.length === 0 && (
-            <h1 className="text-3xl font-semibold text-gray-300 text-center col-span-full">
-              No Product found
-            </h1>
-          )}
+          {products?.length === 0 && <h1 className="text-3xl font-semibold text-gray-300 text-center col-span-full">No Product found</h1>}
 
           {products?.map((product) => (
             <ProductCard key={product._id} product={product} />
