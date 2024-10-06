@@ -31,9 +31,7 @@ export const getFeaturedProducts = async (req, res) => {
     res.json(featuredProducts);
   } catch (error) {
     console.log(`Error in getFreaturedProduct ${error.message}`);
-    return res
-      .status(500)
-      .json({ message: "Server error", error: error.message });
+    return res.status(500).json({ message: "Server error", error: error.message });
   }
 };
 
@@ -51,9 +49,7 @@ export const createProduct = async (req, res) => {
       name,
       description,
       price,
-      image: cloudinaryResponse?.secure_url
-        ? cloudinaryResponse.secure_url
-        : "",
+      image: cloudinaryResponse?.secure_url ? cloudinaryResponse.secure_url : "",
       category,
     });
     res.status(201).json(product);
@@ -93,7 +89,7 @@ export const getRecommendedProducts = async (req, res) => {
     const product = await Product.aggregate([
       { $sample: { size: 3 } },
       {
-        $product: {
+        $project: {
           _id: 1,
           name: 1,
           description: 1,
@@ -136,9 +132,7 @@ export const toggleFeaturedProduct = async (req, res) => {
       res.status(404).json({ message: "Product not found" });
     }
   } catch (error) {
-    console.log(
-      `Error in toggle featured product controller : ${error.message}`
-    );
+    console.log(`Error in toggle featured product controller : ${error.message}`);
     res.status(500).json({ message: "Server error", error: error.message });
   }
 };

@@ -6,10 +6,8 @@ export const getCartProducts = async (req, res) => {
 
     // add quantity for each product
     const cartItems = products.map((product) => {
-      const item = req.user.cartItems.find(
-        (cartItem) => cartItem.id === product.id
-      );
-      return { ...product.toJSON, quantity: item.quantity };
+      const item = req.user.cartItems.find((cartItem) => cartItem.id === product.id);
+      return { ...product.toJSON(), quantity: item.quantity };
     });
     res.json(cartItems);
   } catch (error) {
@@ -40,10 +38,12 @@ export const removeAllFromCart = async (req, res) => {
   try {
     const user = req.user;
     const { productId } = req.body;
+    console.log(user.cartItems[0].id);
     if (!productId) {
       user.cartItems = [];
     } else {
-      user.cartItems = user.cartItems.filter((item) => item._id !== productId);
+      user.cartItems = user.cartItems.filter((item) => item.id !== productId);
+      console.log(user.cartItems);
     }
     await user.save();
     res.json(user.cartItems);
@@ -57,13 +57,14 @@ export const updateQuantity = async (req, res) => {
   try {
     const { id: productId } = req.params;
     const { quantity } = req.body;
+
     const user = req.user;
-    const existingItem = user.cartItems.find(item(item.id === productId));
+    const existingItem = user.cartItems.find((item) => item.id === productId);
     if (existingItem) {
       if (existingItem.quantity === 0) {
         user.cartItems = user.cartItems.filter((item) => item.id !== productId);
         await user.save();
-        return res.json(uesr.cartItems);
+        return res.json(user.cartItems);
       }
       existingItem.quantity = quantity;
       await user.save();
@@ -72,7 +73,7 @@ export const updateQuantity = async (req, res) => {
       res.status(404).json({ message: "Product not found" });
     }
   } catch (error) {
-    console.log(`error in removeAllFromCart controller : ${error.message}`);
+    console.log(`error in update quantity controller : ${error.message}`, error);
     res.status(500).json({ message: "Server error ", error: error.message });
   }
 };
