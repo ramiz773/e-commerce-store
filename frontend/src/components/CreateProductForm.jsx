@@ -3,15 +3,7 @@ import { motion } from "framer-motion";
 import { Loader, PlusCircle, Upload } from "lucide-react";
 import { useProductStore } from "../stores/useProductStore";
 
-const categories = [
-  "jeans",
-  "t-shirts",
-  "shoes",
-  "glasses",
-  "jackets",
-  "suits",
-  "bags",
-];
+const categories = ["jeans", "t-shirts", "shoes", "glasses", "jackets", "suits", "bags"];
 
 const CreateProductForm = () => {
   const [newProduct, setNewProduct] = useState({
@@ -60,16 +52,11 @@ const CreateProductForm = () => {
       initial={{ opacity: 0, y: 20 }}
       transition={{ duration: 0.8 }}
     >
-      <h2 className="text-2xl font-semibold mb-6 text-emerald-300">
-        Create New Product
-      </h2>
+      <h2 className="text-2xl font-semibold mb-6 text-emerald-300">Create New Product</h2>
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <label
-            htmlFor="name"
-            className="block text-sm font-medium text-gray-300"
-          >
+          <label htmlFor="name" className="block text-sm font-medium text-gray-300">
             Product name
           </label>
           <input
@@ -77,19 +64,14 @@ const CreateProductForm = () => {
             id="name"
             name="name"
             value={newProduct.name}
-            onChange={(e) =>
-              setNewProduct({ ...newProduct, name: e.target.value })
-            }
+            onChange={(e) => setNewProduct({ ...newProduct, name: e.target.value })}
             className="mt-1 block w-full bg-gray-700 border border-gray-600 rounded-md shadow-md py-2 px-3
            text-white focus:ring-1 focus:outline-none focus:ring-emerald-500 focus:border-emerald-500"
           />
         </div>
 
         <div>
-          <label
-            htmlFor="description"
-            className="block text-sm font-medium text-gray-300"
-          >
+          <label htmlFor="description" className="block text-sm font-medium text-gray-300">
             Product Description
           </label>
           <textarea
@@ -97,19 +79,14 @@ const CreateProductForm = () => {
             name="description"
             value={newProduct.description}
             rows={3}
-            onChange={(e) =>
-              setNewProduct({ ...newProduct, description: e.target.value })
-            }
+            onChange={(e) => setNewProduct({ ...newProduct, description: e.target.value })}
             className="mt-1 block w-full bg-gray-700 border border-gray-600 rounded-md shadow-md py-2 px-3
            text-white focus:ring-1 focus:outline-none focus:ring-emerald-500 focus:border-emerald-500"
           />
         </div>
 
         <div>
-          <label
-            htmlFor="price"
-            className="block text-sm font-medium text-gray-300"
-          >
+          <label htmlFor="price" className="block text-sm font-medium text-gray-300">
             Product Price
           </label>
           <input
@@ -117,28 +94,21 @@ const CreateProductForm = () => {
             id="price"
             name="price"
             value={newProduct.price}
-            onChange={(e) =>
-              setNewProduct({ ...newProduct, price: e.target.value })
-            }
+            onChange={(e) => setNewProduct({ ...newProduct, price: e.target.value })}
             className="mt-1 block w-full bg-gray-700 border border-gray-600 rounded-md shadow-md py-2 px-3
            text-white focus:ring-1 focus:outline-none focus:ring-emerald-500 focus:border-emerald-500"
           />
         </div>
 
         <div>
-          <label
-            htmlFor="price"
-            className="block text-sm font-medium text-gray-300"
-          >
+          <label htmlFor="price" className="block text-sm font-medium text-gray-300">
             Category
           </label>
           <select
             id="category"
             name="category"
             value={newProduct.category}
-            onChange={(e) =>
-              setNewProduct({ ...newProduct, category: e.target.value })
-            }
+            onChange={(e) => setNewProduct({ ...newProduct, category: e.target.value })}
             className="mt-1 block w-full bg-gray-700 border border-gray-600 rounded-md shadow-md py-2 px-3
            text-white focus:ring-1 focus:outline-none focus:ring-emerald-500 focus:border-emerald-500"
           >
@@ -150,13 +120,7 @@ const CreateProductForm = () => {
         </div>
 
         <div className="mt-1 flex items-center">
-          <input
-            type="file"
-            id="image"
-            className="sr-only"
-            accept="image/*"
-            onChange={handleImageChange}
-          />
+          <input type="file" id="image" className="sr-only" accept="image/*" onChange={handleImageChange} />
           <label
             htmlFor="image"
             className="cursor-pointer bg-gray-700 border border-gray-600 rounded-md shadow-sm py-2 px-3
@@ -165,9 +129,7 @@ const CreateProductForm = () => {
             <Upload className="-h-4 w-4 inline-block mr-2" />
             Upload Image
           </label>
-          {newProduct.image && (
-            <span className="ml-3 text-sm text-gray-400">image uploaded</span>
-          )}
+          {newProduct.image && <span className="ml-3 text-sm text-gray-400">image uploaded</span>}
         </div>
 
         <button
@@ -179,10 +141,7 @@ const CreateProductForm = () => {
         >
           {loading ? (
             <>
-              <Loader
-                className="mr-2 h-5 w-5 animate-spin"
-                aria-hidden="true"
-              />
+              <Loader className="mr-2 h-5 w-5 animate-spin" aria-hidden="true" />
               Loading....
             </>
           ) : (

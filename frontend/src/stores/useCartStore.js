@@ -8,6 +8,7 @@ export const useCartStore = create((set, get) => ({
   total: 0,
   subtotal: 0,
   loading: false,
+  isCouponApplied: false,
 
   getCartItems: async () => {
     set({ loading: true });
@@ -39,10 +40,38 @@ export const useCartStore = create((set, get) => ({
     }
   },
 
+  removeFromCart: async (productId) => {
+    set({ loading: true });
+    try {
+      await axios.delete("/cart", { data: { productId } });
+      set((prevState) => ({ cart: prevState.cart.filter((item) => item._id !== productId), loading: false }));
+      get().calculateTotals();
+    } catch (error) {
+      set({ loading: false });
+      console.log(error, "error in delete cart item");
+    }
+  },
+
+  updateQuantity: async (productId, quantity) => {
+    if (quantity === 0) {
+      get().removeFromCart(productId);
+      return;
+    }
+    try {
+      await axios.put(`/cart/${productId}`, { quantity });
+      set((preState) => ({ cart: preState.cart.map((item) => (item._id === productId ? { ...item, quantity } : item)) }));
+      get().calculateTotals();
+    } catch (error) {
+      set({ loading: false });
+      console.log(error);
+    }
+  },
+
   calculateTotals: () => {
     const { cart, coupon } = get();
 
-    const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantiry, 0);
+    const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+    console.log(subtotal);
     let total = subtotal;
 
     if (coupon) {
