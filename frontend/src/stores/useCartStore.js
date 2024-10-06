@@ -71,7 +71,6 @@ export const useCartStore = create((set, get) => ({
     const { cart, coupon } = get();
 
     const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
-    console.log(subtotal);
     let total = subtotal;
 
     if (coupon) {
@@ -80,5 +79,9 @@ export const useCartStore = create((set, get) => ({
     }
 
     set({ subtotal, total });
+  },
+
+  clearCart: async () => {
+    set({ cart: [], total: 0, subtotal: 0, coupon: null });
   },
 }));
