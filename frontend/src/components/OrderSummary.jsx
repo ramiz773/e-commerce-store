@@ -25,7 +25,6 @@ const OrderSummary = () => {
       console.error(result.error);
     }
   };
-
   return (
     <motion.div
       className="space-y-4 rounded-lg border border-gray-700 bg-gray-800 p-4 shadow-sm sm:p-6"
@@ -44,14 +43,14 @@ const OrderSummary = () => {
           {savings > 0 && (
             <dl className="flex items-center justify-between gap-4">
               <dt className="text-base font-normal text-gray-300">Savings</dt>
-              <dd className="text-base font-bold text-white">&#8377; {formattedSaving}</dd>
+              <dd className="text-base font-bold text-emerald-400">-&#8377;{formattedSaving}</dd>
             </dl>
           )}
 
           {coupon && isCouponApplied && (
             <dl className="flex items-center justify-between gap-4">
               <dt className="text-base font-normal text-gray-300">Coupon {coupon.code}</dt>
-              <dd className="text-base font-bold text-white">&#8377; {coupon.disCountPercentage}</dd>
+              <dd className="text-base font-bold text-emerald-400">-{coupon.discountPercentage}%</dd>
             </dl>
           )}
 

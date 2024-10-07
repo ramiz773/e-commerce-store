@@ -1,19 +1,29 @@
 import { motion } from "framer-motion";
-import { useState } from "react";
-import Coupon from "../../../backend/models/coupon.model";
+import { useEffect, useState } from "react";
 import { useCartStore } from "../stores/useCartStore";
 
 function GiftCouponCart() {
-  const { coupon, isCouponApplied } = useCartStore();
+  const { coupon, isCouponApplied, getMyCoupon, applyCoupon, removeCoupon } = useCartStore();
 
   const [userInputCode, setUserInputCode] = useState("");
-  const handleApplyCoupon = () => {
-    console.log(userInputCode);
+
+  useEffect(() => {
+    getMyCoupon();
+  }, [getMyCoupon]);
+
+  useEffect(() => {
+    if (coupon) setUserInputCode(coupon.code);
+  }, [coupon]);
+
+  const handleApplyCoupon = async () => {
+    if (!userInputCode) return;
+    await applyCoupon(userInputCode);
   };
 
   const handleRemoveCoupon = (e) => {
-    console.log("handle rmeove coupon");
+    removeCoupon();
   };
+
   return (
     <motion.div
       className="space-y-4 rounded-lg border border-gray-700 bg-gray-800 p-4 shadow-md sm:p-6"
@@ -53,7 +63,7 @@ function GiftCouponCart() {
         <div className="mt-4">
           <h3 className="text-lg font-medium text-gray-300 ">Applied Coupon</h3>
           <p className="mt-2 text-sm text-gray-400">
-            {coupon}-{coupon.discountPercentage}%off
+            {coupon.code}-{coupon.discountPercentage}%off
           </p>
 
           <motion.button
