@@ -9,14 +9,18 @@ const AnalyticsTab = ({}) => {
   const [isLoading, setIsLoading] = useState(true);
   const [dailySalesData, setDailySalesData] = useState([]);
 
+  const CustomYAxis = ({ yAxisId = "left", orientation = "left", stroke = "#D1D5DB", ...props }) => (
+    <YAxis yAxisId={yAxisId} orientation={orientation} stroke={stroke} {...props} />
+  );
+
+  const CustomXAxis = ({ dataKey = "name", stroke = "#D1D5DB", ...props }) => <XAxis dataKey={dataKey} stroke={stroke} {...props} />;
+
   useEffect(() => {
-    console.log("inside useEffect hook in the analyticsTab.jsx");
     const fetchAnalyticsData = async () => {
       try {
         const res = await axios.get("/analytics");
         setAnalyticsData(res.data.analyticsData);
         setDailySalesData(res.data.dailySalesData);
-        console.log(res.data);
       } catch (error) {
         console.log("error in fetching analyticsTab : ", error);
       } finally {
@@ -26,8 +30,6 @@ const AnalyticsTab = ({}) => {
 
     fetchAnalyticsData();
   }, []);
-
-  console.log(analyticsData, dailySalesData);
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-6 ">
@@ -41,14 +43,14 @@ const AnalyticsTab = ({}) => {
         className={`bg-gray-800/60 rounded-lg p-6 shadow-lg`}
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.25 }}
+        transition={{ duration: 0.5, delay: 0.5 }}
       >
         <ResponsiveContainer width="100%" height={400}>
           <LineChart data={dailySalesData}>
             <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="name" stroke="#D1D5DB" />
-            <YAxis yAxisId="left" stroke="#D1D5DB" />
-            <YAxis yAxisId="right" orientation="right" stroke="#D1D5DB" />
+            <CustomXAxis />
+            <CustomYAxis />
+            <CustomYAxis yAxisId="right" orientation="right" />
             <Tooltip />
             <Legend />
             <Line yAxisId="left" type="monotone" dataKey="sales" stroke="#10B981" activeDot={{ r: 8 }} name="Sales" />

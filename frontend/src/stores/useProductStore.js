@@ -81,15 +81,14 @@ export const useProductStore = create((set) => ({
     }
   },
 
-  // setFeaturedProducts: async () => {
-  //   set({ loading: true });
-  //   try {
-  //     const res = await axios.get("/products/featured");
-  //     console.log(res.data);
-  //     set({ products: response.data, loading: false });
-  //   } catch (error) {
-  //     console.log(error);
-  //     set({ error: "Failed to fetch products", loading: false });
-  //   }
-  // },
+  fetchFeaturedProducts: async () => {
+    set({ loading: true });
+    try {
+      const res = await axios.get("/products/featured");
+      set({ products: res.data, loading: false });
+    } catch (error) {
+      console.log(error);
+      set({ error: "Failed to fetch products", loading: false });
+    }
+  },
 }));

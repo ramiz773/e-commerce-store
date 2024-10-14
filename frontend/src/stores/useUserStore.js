@@ -25,7 +25,6 @@ export const useUserStore = create((set, get) => ({
 
   login: async ({ email, password }) => {
     set({ loading: true });
-
     try {
       const res = await axios.post("/auth/login", { email, password });
       set({ user: res.data.user, loading: false });
@@ -46,6 +45,24 @@ export const useUserStore = create((set, get) => ({
     }
   },
 
+  refreshToken: async () => {
+    if (get().checkAuth) return;
+
+    set({ checkingAuth: true });
+
+    try {
+      const response = await axios.post("/auth/refresh-token");
+      set({ checkAuth: false });
+      return response.data;
+    } catch (error) {
+      set({ user: null, checkAuth: false });
+      throw error;
+    }
+
+    // prevent multiple simultaneous refresh attempt
+    // if(get().checkingAuth)
+  },
+
   logout: async () => {
     try {
       await axios.post("/auth/logout");
@@ -56,4 +73,28 @@ export const useUserStore = create((set, get) => ({
   },
 }));
 
-// Todo implement the axios interceptors for refreshing access tocken
+let refreshPromise = null;
+
+axios.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    const originalRequest = error.config;
+
+    if (error.response?.status === 401 && !originalRequest._retry) {
+      originalRequest._retry = true;
+
+      try {
+        if (refreshPromise) {
+          await refreshPromise;
+          return axios(originalRequest);
+        }
+
+        // start a new refresh process
+        refreshPromise = useUserStore.getState().refreshToken();
+        await refreshPromise;
+        refreshPromise = null;
+        return axios(originalRequest);
+      } catch (error) {}
+    }
+  }
+);
